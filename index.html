@@ -150,13 +150,13 @@
             </div>
           </div>
         </div>
-        <div class="flex flex-row gap-4 items-start">
+        <div class="flex flex-col sm:flex-row gap-4 items-stretch">
           <div class="flex-1">
             <label
               for="tableName"
               class="block text-sm font-medium text-gray-700 mb-1"
             >
-              <span class="text-red-500">*</span> Nombre de la tabla
+              <span class="text-red-500">*</span> Nombre tabla
             </label>
             <div class="relative">
               <i
@@ -203,7 +203,7 @@
               for="includeCreate"
               class="block text-sm font-medium text-gray-700 mb-1"
             >
-              ¿Deseas incluir el bloque CREATE TABLE?
+              ¿Incluir CREATE TABLE?
             </label>
             <div class="relative">
               <i
@@ -214,8 +214,8 @@
                 id="includeCreate"
                 class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
               >
-                <option value="yes" selected>Sí, generar CREATE TABLE</option>
-                <option value="no">No, solo INSERT INTO</option>
+                <option value="yes" selected>Sí</option>
+                <option value="no">No</option>
               </select>
             </div>
           </div>
@@ -224,7 +224,7 @@
               for="includeMigration"
               class="block text-sm font-medium text-gray-700 mb-1"
             >
-              ¿Deseas generar una migración Yii2?
+              ¿Migración Yii2?
             </label>
             <div class="relative">
               <i
@@ -235,7 +235,7 @@
                 id="includeMigration"
                 class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
               >
-                <option value="yes">Sí, generar migración</option>
+                <option value="yes">Sí</option>
                 <option value="no" selected>No</option>
               </select>
             </div>
