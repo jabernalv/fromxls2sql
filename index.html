@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQLizer Lite</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="/favicon/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="/favicon/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="/favicon/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="/favicon/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="/favicon/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="/favicon/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="/favicon/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="/favicon/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="/favicon/android-icon-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="/favicon/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="/favicon/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="/favicon/ms-icon-144x144.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body
+    class="bg-gray-100 text-gray-900 min-h-screen flex items-center justify-center p-4"
+  >
+    <div
+      class="w-[90%] bg-white shadow-lg rounded-2xl p-6 space-y-6 flex flex-col"
+    >
+      <img src="assets/logo.png" alt="FromXLS2SQL logo" class="w-20 mx-auto" />
+      <div class="">
+        <div>
+          <h1 class="text-3xl font-bold text-center text-blue-600">
+            🧩 FromXLS2SQL
+          </h1>
+        </div>
+        <div class="text-sm text-gray-600 text-center">
+          Sube un archivo <strong>.csv</strong>, <strong>.xls</strong> o
+          <strong>.xlsx</strong> que contenga los datos.<br />
+          Asegúrate de que:
+        </div>
+        <div>
+          <ul class="text-sm text-gray-600 list-disc list-inside">
+            <li>La primera fila tenga los nombres de las columnas</li>
+            <li>Solo haya una hoja (en archivos Excel)</li>
+            <li>
+              Los nombres de columna sean válidos (letras, números, guion bajo,
+              comienzan con letra)
+            </li>
+            <li>
+              Debes elegir si deseas generar también el bloque
+              <code>CREATE TABLE</code>
+            </li>
+            <li>Debes proporcionar el nombre de la tabla</li>
+          </ul>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">
+              <span class="text-red-500">*</span> Selecciona un archivo
+            </label>
+            <div class="flex items-stretch gap-3">
+              <label
+                for="fileInput"
+                id="fileLabel"
+                class="flex flex-1 items-center justify-center gap-2 p-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm text-gray-700 hover:bg-gray-50 cursor-pointer transition"
+              >
+                <i data-lucide="upload" class="w-4 h-4"></i>
+                Elegir archivo
+              </label>
+              <input
+                type="file"
+                accept=".csv,.xls,.xlsx"
+                id="fileInput"
+                class="sr-only"
+              />
+
+              <button
+                id="processBtn"
+                disabled
+                class="flex items-center justify-center gap-2 px-4 bg-blue-300 text-white rounded-md cursor-not-allowed transition disabled:opacity-60 text-sm w-36"
+              >
+                <i data-lucide="file-check" class="w-4 h-4"></i>
+                Procesar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-row gap-4 items-start">
+          <div class="flex-1">
+            <label
+              for="tableName"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
+              <span class="text-red-500">*</span> Nombre de la tabla
+            </label>
+            <div class="relative">
+              <i
+                data-lucide="table"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              ></i>
+              <input
+                type="text"
+                id="tableName"
+                class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
+                placeholder="ej: usuarios"
+                required
+              />
+            </div>
+
+            <div id="tableNameFeedback" class="text-sm mt-1 hidden"></div>
+          </div>
+          <div class="flex-1">
+            <label
+              for="sqlDialect"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Formato SQL
+            </label>
+            <div class="relative">
+              <i
+                data-lucide="settings"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              ></i>
+              <select
+                id="sqlDialect"
+                class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              >
+                <option value="mysql" selected>MySQL / MariaDB</option>
+                <option value="postgresql">PostgreSQL</option>
+                <option value="sqlserver">SQL Server</option>
+                <option value="oracle">Oracle</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <label
+              for="includeCreate"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
+              ¿Deseas incluir el bloque CREATE TABLE?
+            </label>
+            <div class="relative">
+              <i
+                data-lucide="database"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              ></i>
+              <select
+                id="includeCreate"
+                class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              >
+                <option value="yes" selected>Sí, generar CREATE TABLE</option>
+                <option value="no">No, solo INSERT INTO</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex-1">
+            <label
+              for="includeMigration"
+              class="block text-sm font-medium text-gray-700 mb-1"
+            >
+              ¿Deseas generar una migración Yii2?
+            </label>
+            <div class="relative">
+              <i
+                data-lucide="file-code-2"
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              ></i>
+              <select
+                id="includeMigration"
+                class="w-full pl-9 p-2 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300"
+              >
+                <option value="yes">Sí, generar migración</option>
+                <option value="no" selected>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          id="fileAlert"
+          class="hidden text-sm text-red-600 bg-red-100 border border-red-300 p-2 rounded-md mt-1"
+        ></div>
+        <div id="resultContainer" class="space-y-2 hidden">
+          <label for="output" class="block text-sm font-medium text-gray-700"
+            >Resultado SQL</label
+          >
+          <textarea
+            readonly
+            id="output"
+            class="w-full h-64 p-3 text-sm font-mono bg-gray-50 border border-gray-300 rounded-md resize-none"
+          ></textarea>
+
+          <div class="flex justify-end gap-3">
+            <button
+              id="copyBtn"
+              class="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              <i data-lucide="clipboard-copy" class="w-4 h-4"></i>
+              Copiar SQL
+            </button>
+
+            <button
+              id="downloadBtn"
+              class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+            >
+              <i data-lucide="download" class="w-4 h-4"></i>
+              Descargar .sql
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-10 text-center text-sm text-gray-500 italic flex flex-col items-center gap-2"
+      >
+        <i data-lucide="sparkles" class="w-6 h-6 text-yellow-400"></i>
+        <div>
+          <p>“Esta no es una simple herramienta…</p>
+          <p>
+            es el grito silencioso de un desarrollador que venció la oscuridad
+            del mal diseño.”
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="lib/xlsx.full.min.js"></script>
+    <script>
+      const script = document.createElement("script");
+      script.src = "js/fromxls2sql.js?ver=" + Date.now();
+      document.body.appendChild(script);
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+      });
+    </script>
+  </body>
+</html>
